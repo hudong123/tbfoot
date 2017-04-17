@@ -1,0 +1,6 @@
+.tbfoot{text-align: right;}
+.pagination{padding-left:0;margin:0 12px;border-radius:4px;display:inline-block}
+.pagination li{cursor: pointer;}
+.pagination>li.active>a,.pagination>li.active>a:focus,.pagination>li.active>a:hover{background-color:#6FAED9;border-color:#6FAED9;color:#FFF;text-shadow:0 -1px 0 rgba(0,0,0,.25);z-index:2}
+.tbfoot .pagination li .input_page{vertical-align:top;-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;height:32px;margin-bottom:0;background-color:#fff;width:40px;float:left;margin-left: 15px;}
+
