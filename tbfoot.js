@@ -2,7 +2,7 @@ var hostUrl = window.location.href.split('?')[0];
 
 //获取url参数
 function getUrlParam(name) {
-	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
     var r = window.location.search.substr(1).match(reg);  //匹配目标参数
     if (r != null) return r[2]; return null; //返回参数值
 }
@@ -28,7 +28,7 @@ function getPage(page,allpage,node,fn) {
     if(curPage>1){
         str.push('<li><a class="btn_turn previous">Previous</a></li>');
     }else{
-        str.push('<li><a class="btn_turn disabled">Previous</a></li>');
+        str.push('<li class="disabled"><a>Previous</a></li>');
     }
     if(totalPages>(showPage+2)) {
         if((curPage-halfShowPage) <= 3 ){
@@ -43,7 +43,7 @@ function getPage(page,allpage,node,fn) {
             str.push('<li><a class="btn_elli">......</a><a class="btn_page">'+totalPages+'</a></li>');
             //str.push('<a class="btn btn_elli">......</a><a class="btn btn_page">'+totalPages+'</a>');
         } else if((curPage+halfShowPage) >= totalPages){
-            str.push('<li><a class="btn_page">1</a><a class="btn_page">2</a><a class="btn btn_elli">......</a></li>');
+            str.push('<li><a class="btn_page">1</a><a class="btn_page">2</a><a class="btn_elli">......</a></li>');
             for(var i=totalPages-showPage;i<=totalPages;i++) {
                 if(i==curPage) {
                     str.push("<li class='active'><a>"+i+"</a></li>");
@@ -75,7 +75,7 @@ function getPage(page,allpage,node,fn) {
     if(curPage<totalPages){
         str.push("<li><a class='btn_turn next'>Next</a></li>");
     }else{
-        str.push("<li><a class='btn_turn disabled'>Next</a></li>");
+        str.push("<li class='disabled'><a>Next</a></li>");
     }
     str.push('<li><input type="text" class="input_page" value="'+curPage+'" total="'+totalPages+'"></li>')
     str.push('<li class="jump_page"><a>Go</a></li>')
@@ -110,7 +110,11 @@ function pageEvent(id) {
 			total = parseInt($(this).attr('total')),
 			curr = parseInt($(this).val());
 		if(event.keyCode == 13) {
-            curpage=curr;
+			if(isNaN(curr) == false){
+				parseInt(curr) >= total ? curpage = total : curpage = curr
+			}else{
+				curpage = 1
+			}
             window.location.href = hostUrl + '?page=' + curpage;
 		}
 	})
@@ -118,7 +122,11 @@ function pageEvent(id) {
 		var val = $(idStr+' .input_page').val(),
 			total = parseInt($(idStr+' .input_page').attr('total')),
 			curr = parseInt($('.input_page').val());
-			curpage=curr;
-            window.location.href = hostUrl + '?page=' + curpage;
+		if(isNaN(curr) == false){
+			parseInt(curr) >= total ? curpage = total : curpage = curr
+		}else{
+			curpage = 1
+		}
+        window.location.href = hostUrl + '?page=' + curpage;	
 	})
 }
