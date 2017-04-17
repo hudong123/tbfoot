@@ -1,6 +1,8 @@
+var hostUrl = window.location.href.split('?')[0];
+
 //获取url参数
 function getUrlParam(name) {
-    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
     var r = window.location.search.substr(1).match(reg);  //匹配目标参数
     if (r != null) return r[2]; return null; //返回参数值
 }
@@ -76,7 +78,7 @@ function getPage(page,allpage,node,fn) {
         str.push("<li><a class='btn_turn disabled'>Next</a></li>");
     }
     str.push('<li><input type="text" class="input_page" value="'+curPage+'" total="'+totalPages+'"></li>')
-    str.push('<li><a>Go</a></li>')
+    str.push('<li class="jump_page"><a>Go</a></li>')
     str.push('</ul>')
     node.append(str.join(""));
     pageEvent(node.attr('id'), fn);
@@ -88,11 +90,11 @@ function pageEvent(id) {
 	//分页按钮事件
 	$(idStr+' .btn_page').click(function() {
         curpage=$(this).text();
-        
+        window.location.href = hostUrl + '?page=' + curpage;
 	})
 	$(idStr+' .btn_turn').click(function() {
 		var cls = $(this).attr('class');
-		var curr = parseInt($(this).parent().children('.active').text());
+		var curr = parseInt($(this).parent().parent().children('.active').text());
 		if(cls.indexOf('previous') != -1) {
 			curr--;
             curpage=curr;
@@ -101,15 +103,22 @@ function pageEvent(id) {
 			curr++;
             curpage=curr;
 		}
-        
+        window.location.href = hostUrl + '?page=' + curpage;
 	})
 	$(idStr+' .input_page').keyup(function(event) {
 		var val = $(this).val(),
 			total = parseInt($(this).attr('total')),
-			curr = parseInt($('.input_page').val());
+			curr = parseInt($(this).val());
 		if(event.keyCode == 13) {
             curpage=curr;
-            
+            window.location.href = hostUrl + '?page=' + curpage;
 		}
+	})
+	$(idStr+' .jump_page').click(function(){
+		var val = $(idStr+' .input_page').val(),
+			total = parseInt($(idStr+' .input_page').attr('total')),
+			curr = parseInt($('.input_page').val());
+			curpage=curr;
+            window.location.href = hostUrl + '?page=' + curpage;
 	})
 }
